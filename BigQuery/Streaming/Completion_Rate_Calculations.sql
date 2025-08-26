@@ -45,10 +45,6 @@ Final SELECT:
   - Calculates all final rates (episodic_completion_rate, survivorship_x_of_any, intended and available completion rates, etc).
   - Orders output for time-based, funnel-style, or executive analytics.
 
-NOTES:
-  - Robust to future-episode data leakage and incomplete drops.
-  - Can compare “intended” vs “actual possible” completions for any show, cohort, or drop.
-*/
 ---------------------------------------------------------------------- */
 
 -- ---------- Parameters ----------
