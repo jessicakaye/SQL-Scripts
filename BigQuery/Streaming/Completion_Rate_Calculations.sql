@@ -184,7 +184,10 @@ cte3_available_episodes AS (
     cohort_week,
     MIN(SAFE_CAST(episode_number AS INT64)) AS batch_first_episode_nbr,
     MAX(SAFE_CAST(episode_number AS INT64)) AS batch_final_episode_nbr,
-    MAX(SAFE_CAST(episode_number AS INT64)) - 1 AS batch_penultimate_episode_nbr, --will need to adjust for seasons where not all episodes are available in order
+    ARRAY_AGG(
+      DISTINCT IF(cohort_window_end_dt >= normalized_episode_dt, SAFE_CAST(episode_number AS INT64), NULL)
+      ORDER BY IF(cohort_window_end_dt >= normalized_episode_dt, SAFE_CAST(episode_number AS INT64), NULL) DESC
+    )[SAFE_OFFSET(1)] AS batch_penultimate_episode_nbr, 
     COUNT(DISTINCT CASE WHEN cohort_window_end_dt >= normalized_episode_dt THEN episode_number END) AS available_episodes_raw,
     CASE
       WHEN release_model = 'Binge'
